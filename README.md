@@ -280,8 +280,10 @@ product-inventory-api/
 │   │   ├── categoryRoutes.js      # category addresses
 │   │   └── productRoutes.js       # product addresses
 │   ├── controllers/
-│   │   ├── categoryController.js  # what happens for each category request
-│   │   └── productController.js   # what happens for each product request
+│   │   ├── categoryController.js      # category requests (Akata692)
+│   │   ├── productController.js       # product create + read (anonymous371)
+│   │   ├── productModifyController.js # product update + delete (Damian-404)
+│   │   └── stockController.js         # stock changes + low stock (kellscaleb)
 │   ├── middleware/
 │   │   ├── validate.js            # checks incoming data
 │   │   └── errorHandler.js        # catches errors, sends clean replies
@@ -305,7 +307,7 @@ If anything goes wrong along the way, the **error handler** sends a clean error 
 
 ## 9. Getting started
 
-You need [Node.js](https://nodejs.org) (v18 or newer) and [Git](https://git-scm.com).
+You need [Node.js](https://nodejs.org) (**v20 or newer**) and [Git](https://git-scm.com).
 
 ```bash
 # 1. Clone the repo
@@ -333,18 +335,20 @@ The API runs at **http://localhost:3000**. Try opening `http://localhost:3000/ap
 
 Each person owns **one piece** of the project and works on it in their **own branch**.
 
-| # | Member (GitHub) | Responsibility | Branch name |
-|---|---|---|---|
-| 1 | **Logical883** (Project Lead) | Project setup, folder structure, database connection, tables, seed data, wiring `app.js`, reviewing and merging PRs | `feature/project-setup` |
-| 2 | **Akata692** | Categories: all 5 endpoints (routes + controller) | `feature/categories` |
-| 3 | **anonymous371** | Products: create (`POST`) and read (`GET` all, `GET` by id, filters) | `feature/products-create-read` |
-| 4 | **Damian-404** | Products: update (`PUT`) and delete (`DELETE`) | `feature/products-update-delete` |
-| 5 | **kellscaleb** (Caleb Acquaye) | Stock logic: `PATCH /stock`, `GET /low-stock`, negative-quantity and insufficient-stock rules | `feature/stock-logic` |
-| 6 | **Kisha-a11y** | Validation middleware for categories and products | `feature/validation` |
-| 7 | **S580-maker** (Stephen Obodai) | Error handling: central error handler, 404 for unknown routes, consistent response format | `feature/error-handling` |
-| 8 | **SWAG-08** | Postman collection: a request for every endpoint, including failure cases, plus the presentation outline | `feature/postman-tests` |
+| # | Member (GitHub) | Responsibility | Branch name | Your file |
+|---|---|---|---|---|
+| 1 | **Logical883** (Project Lead) | Project setup, folder structure, database connection, tables, seed data, wiring `app.js` and all routes, reviewing and merging PRs | `feature/project-setup` | `config/`, `routes/`, `app.js`, `utils/seed.js` |
+| 2 | **Akata692** | Categories: all 5 endpoints | `feature/categories` | `controllers/categoryController.js` |
+| 3 | **anonymous371** | Products: create (`POST`) and read (`GET` all, `GET` by id, filters) | `feature/products-create-read` | `controllers/productController.js` |
+| 4 | **Damian-404** | Products: update (`PUT`) and delete (`DELETE`) | `feature/products-update-delete` | `controllers/productModifyController.js` |
+| 5 | **kellscaleb** (Caleb Acquaye) | Stock logic: `PATCH /stock`, `GET /low-stock`, negative-quantity and insufficient-stock rules | `feature/stock-logic` | `controllers/stockController.js` |
+| 6 | **Kisha-a11y** | Validation middleware for categories and products | `feature/validation` | `middleware/validate.js` |
+| 7 | **S580-maker** (Stephen Obodai) | Error handling: central error handler, 404 for unknown routes, consistent response format | `feature/error-handling` | `middleware/errorHandler.js` |
+| 8 | **SWAG-08** | Postman collection: a request for every endpoint, including failure cases, plus the presentation outline | `feature/postman-tests` | `postman/` folder |
 
 > Everyone also contributes to the final **5-slide presentation** and the **live demo**.
+
+**How the starter code works:** the project already runs. All routes are connected in `src/routes/`, and every controller and the validation file contain **placeholder functions** that reply `501 Not implemented yet`. Open **your file**, find the placeholder functions (each one has comments explaining what to build), and replace them with real code. You should not need to edit anyone else's file.
 
 ---
 
