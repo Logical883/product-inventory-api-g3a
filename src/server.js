@@ -1,5 +1,5 @@
 // ============================================================
-// Starts the server (owner: Logical883)
+// STARTS THE SERVER (owner: Logical883)
 // Run with:  npm run dev   (auto-restarts)  or  npm start
 // ============================================================
 require('dotenv').config();
