@@ -1,18 +1,19 @@
 // ============================================================
-// Error handling (starter version by Logical883)
+// ERROR HANDLING (starter by Logical883)
 // Improved by: S580-maker, branch: feature/error-handling
 // ------------------------------------------------------------
 // notFound      -> runs when no route matches (404)
-// errorHandler  -> catches any error thrown in the app and sends
-//                  a clean, consistent reply instead of a crash.
+// errorHandler  -> catches every error thrown anywhere in the app
+//                  (services, validation...) and sends ONE clean,
+//                  consistent reply instead of crashing.
 //
-// Standard reply format for ALL errors:
-//   { "success": false, "message": "..." }
+// Standard error reply:   { "success": false, "message": "...", "errors": [...optional...] }
 //
-// Ideas to improve:
-//  - Turn SQLite errors into friendly messages (unique name -> 409, etc.)
-//  - Hide technical details in production
-//  - Log errors in a readable way
+// Ideas to improve (your tasks):
+//  - Show technical details only when NODE_ENV is not "production"
+//  - Handle other known errors (for example payload too large)
+//  - Make the 404 message friendlier
+//  - Clean, readable error logging
 // ============================================================
 
 // 404: the address doesn't exist
@@ -30,24 +31,14 @@ exports.errorHandler = (err, req, res, next) => {
     return res.status(400).json({ success: false, message: 'Invalid JSON in request body' });
   }
 
-  // SQLite: duplicate value in a UNIQUE column
-  if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
-    return res.status(409).json({ success: false, message: 'That name already exists' });
+  // Errors WE throw on purpose with: throw new AppError(message, statusCode)
+  if (err.isOperational) {
+    const body = { success: false, message: err.message };
+    if (err.errors) body.errors = err.errors;
+    return res.status(err.statusCode).json(body);
   }
 
-  // SQLite: linked record problem (e.g. category does not exist)
-  if (err.code === 'SQLITE_CONSTRAINT_FOREIGNKEY') {
-    return res.status(409).json({ success: false, message: 'Related record problem (check category_id)' });
-  }
-
-  // SQLite: a CHECK rule was broken (e.g. negative price or quantity)
-  if (err.code === 'SQLITE_CONSTRAINT_CHECK') {
-    return res.status(400).json({ success: false, message: 'A value broke a database rule (e.g. negative number)' });
-  }
-
+  // Anything else is a bug: log it, but don't leak details to the user
   console.error(err);
-  res.status(err.statusCode || 500).json({
-    success: false,
-    message: err.statusCode ? err.message : 'Something went wrong on the server',
-  });
+  res.status(500).json({ success: false, message: 'Something went wrong on the server' });
 };
