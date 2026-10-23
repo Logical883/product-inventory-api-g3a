@@ -22,35 +22,68 @@
 //  { id, name, description, price, quantity, lowStockThreshold,
 //    categoryId, createdAt, updatedAt }
 // ============================================================
-const AppError = require('../utils/AppError');
-// const seed = require('../data/seedData');
+const seed = require('../data/seedData');
 
-// const products = new Map();
-// let nextId = 1;
-
-const notImplemented = () => {
-  throw new AppError('Not implemented yet', 501);
-};
+const seededAt = new Date().toISOString();
+const products = new Map(
+  seed.products.map((product) => [
+    product.id,
+    { ...product, createdAt: seededAt, updatedAt: seededAt },
+  ])
+);
+let nextId = Math.max(0, ...products.keys()) + 1;
 
 // Returns an ARRAY of all products
-exports.findAll = () => notImplemented();
+exports.findAll = () => Array.from(products.values());
 
 // Returns the product with this id, or undefined
-exports.findById = (id) => notImplemented();
+exports.findById = (id) => products.get(id);
 
 // Returns the product with this name (ignore upper/lower case), or undefined
-exports.findByName = (name) => notImplemented();
+exports.findByName = (name) => {
+  const normalizedName = name.toLowerCase();
+  return Array.from(products.values()).find(
+    (product) => product.name.toLowerCase() === normalizedName
+  );
+};
 
 // Returns an ARRAY of all products that belong to this category id (can be empty)
-exports.findByCategoryId = (categoryId) => notImplemented();
+exports.findByCategoryId = (categoryId) =>
+  Array.from(products.values()).filter(
+    (product) => product.categoryId === categoryId
+  );
 
 // Creates a product: gives it an id + createdAt + updatedAt, stores it, returns it
 // data example: { name, description, price, quantity, lowStockThreshold, categoryId }
-exports.create = (data) => notImplemented();
+exports.create = (data) => {
+  const now = new Date().toISOString();
+  const product = {
+    ...data,
+    id: nextId,
+    createdAt: now,
+    updatedAt: now,
+  };
+  products.set(nextId, product);
+  nextId += 1;
+  return product;
+};
 
 // Merges `changes` into the stored product, refreshes updatedAt,
 // returns the updated product, or undefined if the id doesn't exist
-exports.update = (id, changes) => notImplemented();
+exports.update = (id, changes) => {
+  const product = products.get(id);
+  if (!product) return undefined;
+
+  const updatedProduct = {
+    ...product,
+    ...changes,
+    id,
+    createdAt: product.createdAt,
+    updatedAt: new Date().toISOString(),
+  };
+  products.set(id, updatedProduct);
+  return updatedProduct;
+};
 
 // Deletes the product. Returns true if it existed, false if not
-exports.remove = (id) => notImplemented();
+exports.remove = (id) => products.delete(id);

@@ -22,32 +22,59 @@
 //
 //  Category object shape:  { id, name, createdAt }
 // ============================================================
-const AppError = require('../utils/AppError');
-// const seed = require('../data/seedData');
+const seed = require('../data/seedData');
 
-// const categories = new Map();
-// let nextId = 1;
-
-const notImplemented = () => {
-  throw new AppError('Not implemented yet', 501);
-};
+const seededAt = new Date().toISOString();
+const categories = new Map(
+  seed.categories.map((category) => [
+    category.id,
+    { ...category, createdAt: seededAt },
+  ])
+);
+let nextId = Math.max(0, ...categories.keys()) + 1;
 
 // Returns an ARRAY of all categories
-exports.findAll = () => notImplemented();
+exports.findAll = () => Array.from(categories.values());
 
 // Returns the category with this id, or undefined
-exports.findById = (id) => notImplemented();
+exports.findById = (id) => categories.get(id);
 
 // Returns the category with this name (ignore upper/lower case), or undefined
-exports.findByName = (name) => notImplemented();
+exports.findByName = (name) => {
+  const normalizedName = name.toLowerCase();
+  return Array.from(categories.values()).find(
+    (category) => category.name.toLowerCase() === normalizedName
+  );
+};
 
 // Creates a category: gives it an id + createdAt, stores it, returns it
 // data example: { name: 'Toys' }
-exports.create = (data) => notImplemented();
+exports.create = (data) => {
+  const category = {
+    id: nextId,
+    name: data.name,
+    createdAt: new Date().toISOString(),
+  };
+  categories.set(nextId, category);
+  nextId += 1;
+  return category;
+};
 
 // Updates the stored category and returns the updated one, or undefined if the id doesn't exist
 // changes example: { name: 'Beverages' }
-exports.update = (id, changes) => notImplemented();
+exports.update = (id, changes) => {
+  const category = categories.get(id);
+  if (!category) return undefined;
+
+  const updatedCategory = {
+    ...category,
+    ...changes,
+    id,
+    createdAt: category.createdAt,
+  };
+  categories.set(id, updatedCategory);
+  return updatedCategory;
+};
 
 // Deletes the category. Returns true if it existed, false if not
-exports.remove = (id) => notImplemented();
+exports.remove = (id) => categories.delete(id);
