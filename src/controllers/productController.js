@@ -1,42 +1,41 @@
-// ============================================================
-// PRODUCT CONTROLLER (owner: anonymous371, branch: feature/products)
-// ------------------------------------------------------------
-// The controller is the "waiter": it takes the request, hands it to the
-// service, and brings back the response.
-//
-// RULES FOR THIS LAYER
-//  - Read from req (req.params, req.body, req.query), call ONE service function, send res.
-//  - NO business rules here and NEVER touch repositories.
-//  - You don't need try/catch: if the service throws an AppError, Express sends it
-//    to the error handler automatically.
-//  - The :id in the address arrives as TEXT, so convert it: Number(req.params.id)
-//  - Filters come from the query string:  GET /api/products?categoryId=1&search=water
-//    (req.query.categoryId is text too, so convert it when it exists)
-//
-// EXAMPLE OF THE PATTERN:
-//   exports.getProductById = (req, res) => {
-//     const product = productService.getProductById(Number(req.params.id));
-//     res.status(200).json({ success: true, data: product });
-//   };
-//
-// Reply format:  { success: true, data: ... }     (use 201 for create)
-// ============================================================
-// const productService = require('../services/productService');
+const AppError = require('../utils/AppError');
+const productService = require('../services/productService');
 
-const notImplemented = (res) =>
-  res.status(501).json({ success: false, message: 'Not implemented yet' });
+exports.createProduct = (req, res) => {
+  const product = productService.createProduct(req.body);
+  res.status(201).json({ success: true, data: product });
+};
 
-// POST /api/products      -> 201
-exports.createProduct = (req, res) => notImplemented(res);
+exports.getProducts = (req, res, next) => {
+  const filters = {};
 
-// GET /api/products       -> 200 (supports ?categoryId= and ?search=)
-exports.getProducts = (req, res) => notImplemented(res);
+  if (req.query.categoryId !== undefined) {
+    const categoryId = Number(req.query.categoryId);
+    if (!Number.isInteger(categoryId) || categoryId < 1) {
+      return next(new AppError('Validation failed', 400, ['categoryId must be a positive whole number']));
+    }
+    filters.categoryId = categoryId;
+  }
 
-// GET /api/products/:id   -> 200
-exports.getProductById = (req, res) => notImplemented(res);
+  if (req.query.search !== undefined) {
+    filters.search = req.query.search;
+  }
 
-// PUT /api/products/:id   -> 200
-exports.updateProduct = (req, res) => notImplemented(res);
+  const products = productService.getAllProducts(filters);
+  res.status(200).json({ success: true, data: products });
+};
 
-// DELETE /api/products/:id -> 200  (reply e.g. { success: true, message: 'Product deleted' })
-exports.deleteProduct = (req, res) => notImplemented(res);
+exports.getProductById = (req, res) => {
+  const product = productService.getProductById(Number(req.params.id));
+  res.status(200).json({ success: true, data: product });
+};
+
+exports.updateProduct = (req, res) => {
+  const product = productService.updateProduct(Number(req.params.id), req.body);
+  res.status(200).json({ success: true, data: product });
+};
+
+exports.deleteProduct = (req, res) => {
+  productService.deleteProduct(Number(req.params.id));
+  res.status(200).json({ success: true, message: 'Product deleted' });
+};

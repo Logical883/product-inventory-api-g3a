@@ -1,11 +1,3 @@
-// ============================================================
-// EXPRESS APP SETUP (owner: Logical883)
-// Connects the middleware and routes. The server itself is started
-// in server.js.
-//
-// The journey of a request:
-//   Route -> Validation -> Controller -> Service -> Repository -> Map
-// ============================================================
 const express = require('express');
 
 const categoryRoutes = require('./routes/categoryRoutes');
@@ -15,20 +7,16 @@ const { notFound, errorHandler } = require('./middleware/errorHandler');
 
 const app = express();
 
-// Lets the API read JSON sent in the request body
 app.use(express.json());
 
-// Express 5 leaves req.body undefined when nothing is sent.
-// This makes sure it is always an object, so `req.body.name` never crashes.
+// Express 5 leaves req.body undefined when the client sends no body.
 app.use((req, res, next) => {
-  if (req.body === undefined) req.body = {};
+  if (req.body == null) req.body = {};
   next();
 });
 
-// Logs every request in the terminal
 app.use(requestLogger);
 
-// Health check: open http://localhost:3000/ to see the API is alive
 app.get('/', (req, res) => {
   res.json({
     success: true,
@@ -37,11 +25,9 @@ app.get('/', (req, res) => {
   });
 });
 
-// Main routes
 app.use('/api/categories', categoryRoutes);
 app.use('/api/products', productRoutes);
 
-// Must stay LAST: unknown routes (404) and error handling
 app.use(notFound);
 app.use(errorHandler);
 

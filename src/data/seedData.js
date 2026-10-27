@@ -1,21 +1,10 @@
-// ============================================================
-// Starting data (owner: Logical883)
-// ------------------------------------------------------------
-// Because we have NO database, everything lives in memory and
-// disappears when the server stops. These items are loaded into the
-// repositories every time the server starts, so the API is never empty
-// (great for the live demo and the video).
-//
-// The ids are fixed so that products can point to their category.
-// Two products are LOW on stock on purpose (to demo the warning):
-//   Orange Juice (8 <= 10)  and  Biscuits (3 <= 5)
-// ============================================================
 const categories = [
   { id: 1, name: 'Drinks' },
   { id: 2, name: 'Snacks' },
   { id: 3, name: 'Stationery' },
 ];
 
+// Orange Juice and Biscuits start at or below their low-stock thresholds.
 const products = [
   { id: 1, name: 'Bottled Water', description: '500ml bottle', price: 5.0, quantity: 50, lowStockThreshold: 10, categoryId: 1 },
   { id: 2, name: 'Orange Juice', description: '1 litre carton', price: 18.5, quantity: 8, lowStockThreshold: 10, categoryId: 1 },
