@@ -2,7 +2,7 @@
 
 REST API for a small shop inventory. It stores categories and products, records sales and restocks, and flags items that are running low.
 
-The API is built with Node.js and Express. There is no database. Data is held in memory and reloads from seed data every time the server starts.
+The API is built with Node.js and Express.js. There is no database so data is held in memory and reloads from seed data every time the server starts.
 
 ## Requirements
 
@@ -20,13 +20,13 @@ npm run dev
 
 The server listens on [http://localhost:3000](http://localhost:3000). `npm start` runs it once. `npm run dev` restarts it when you save a file.
 
-Set `PORT` if you need a different port. The default is `3000`.
+Set `PORT` if you need a different port. The default port is `3000`.
 
 A Postman collection covering the success and failure cases is in `postman/product-inventory-api.postman_collection.json`.
 
 ## Architecture
 
-Each request passes through one layer at a time:
+Each request passes through one layer at a time, as shown below:
 
 ```
 Route → Middleware → Controller → Service → Repository → Map
