@@ -194,7 +194,7 @@
           }
         },
         {
-          "name": "❌ Create category with a duplicate name (different capital letters)",
+          "name": "Create category with a duplicate name (different capital letters)",
           "event": [
             {
               "listen": "test",
@@ -239,7 +239,7 @@
           }
         },
         {
-          "name": "❌ Create category with a blank name",
+          "name": "Create category with a blank name",
           "event": [
             {
               "listen": "test",
@@ -283,7 +283,7 @@
           }
         },
         {
-          "name": "❌ Get a category that does not exist",
+          "name": "Get a category that does not exist",
           "event": [
             {
               "listen": "test",
@@ -314,7 +314,7 @@
           }
         },
         {
-          "name": "❌ Get a category with a bad id (letters)",
+          "name": "Get a category with a bad id (letters)",
           "event": [
             {
               "listen": "test",
@@ -621,7 +621,7 @@
           }
         },
         {
-          "name": "❌ Create product with a category that does not exist",
+          "name": "Create product with a category that does not exist",
           "event": [
             {
               "listen": "test",
@@ -665,7 +665,7 @@
           }
         },
         {
-          "name": "❌ Create product with a duplicate name",
+          "name": "Create product with a duplicate name",
           "event": [
             {
               "listen": "test",
@@ -709,7 +709,7 @@
           }
         },
         {
-          "name": "❌ Create product with price as text",
+          "name": "Create product with price as text",
           "event": [
             {
               "listen": "test",
@@ -752,7 +752,7 @@
           }
         },
         {
-          "name": "❌ Get a product that does not exist",
+          "name": "Get a product that does not exist",
           "event": [
             {
               "listen": "test",
@@ -783,7 +783,7 @@
           }
         },
         {
-          "name": "❌ Get a product with a bad id (letters)",
+          "name": "Get a product with a bad id (letters)",
           "event": [
             {
               "listen": "test",
@@ -944,7 +944,7 @@
           }
         },
         {
-          "name": "❌ Try to sell far more than we have (change = -500)",
+          "name": "Try to sell far more than we have (change = -500)",
           "event": [
             {
               "listen": "test",
@@ -1068,7 +1068,7 @@
           }
         },
         {
-          "name": "❌ Sell 1 more Biscuit (stock would go below 0)",
+          "name": "Sell 1 more Biscuit (stock would go below 0)",
           "event": [
             {
               "listen": "test",
@@ -1115,7 +1115,7 @@
           }
         },
         {
-          "name": "❌ Stock change of 0",
+          "name": "Stock change of 0",
           "event": [
             {
               "listen": "test",
@@ -1160,7 +1160,7 @@
           }
         },
         {
-          "name": "❌ Stock change with a decimal (1.5)",
+          "name": "Stock change with a decimal (1.5)",
           "event": [
             {
               "listen": "test",
@@ -1205,7 +1205,7 @@
           }
         },
         {
-          "name": "❌ Stock change sent as text (\"5\")",
+          "name": "Stock change sent as text (\"5\")",
           "event": [
             {
               "listen": "test",
@@ -1250,7 +1250,7 @@
           }
         },
         {
-          "name": "❌ Stock change missing from the body",
+          "name": "Stock change missing from the body",
           "event": [
             {
               "listen": "test",
@@ -1295,7 +1295,7 @@
           }
         },
         {
-          "name": "❌ Stock change on a product that does not exist",
+          "name": "Stock change on a product that does not exist",
           "event": [
             {
               "listen": "test",
@@ -1379,7 +1379,7 @@
       "name": "4. Edge cases",
       "item": [
         {
-          "name": "❌ Unknown route",
+          "name": "Unknown route",
           "event": [
             {
               "listen": "test",
@@ -1409,7 +1409,7 @@
           }
         },
         {
-          "name": "❌ Broken JSON in the body",
+          "name": "Broken JSON in the body",
           "event": [
             {
               "listen": "test",
@@ -1459,7 +1459,7 @@
       "name": "5. Delete (run last)",
       "item": [
         {
-          "name": "❌ Delete a category that still has products (id 1)",
+          "name": "Delete a category that still has products (id 1)",
           "event": [
             {
               "listen": "test",
@@ -1520,7 +1520,7 @@
           }
         },
         {
-          "name": "❌ Delete the same product again",
+          "name": "Delete the same product again",
           "event": [
             {
               "listen": "test",
@@ -1551,7 +1551,7 @@
           }
         },
         {
-          "name": "❌ Delete a product with a bad id (letters)",
+          "name": "Delete a product with a bad id (letters)",
           "event": [
             {
               "listen": "test",
@@ -1612,7 +1612,7 @@
           }
         },
         {
-          "name": "❌ Get the deleted category",
+          "name": "Get the deleted category",
           "event": [
             {
               "listen": "test",
